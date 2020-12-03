@@ -5,6 +5,7 @@
     <string name="home_current_debates">Current Discussions</string>
     <string name="profile_past_debates">Past Discussions</string>
     <string name="debate_remaining_time">Remaining Time: </string>
+    <string name="login_register">Sign Up</string>
 
     <string name="btn_login">Login</string>
     <string name="btn_logout">Logout</string>
