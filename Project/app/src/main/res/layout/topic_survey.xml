@@ -59,30 +59,35 @@
             android:id="@+id/fragment6"
             android:name="cmsc436.changemyview.TopicQuestionFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <fragment
             android:id="@+id/fragment7"
             android:name="cmsc436.changemyview.TopicQuestionFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <fragment
             android:id="@+id/fragment8"
             android:name="cmsc436.changemyview.TopicQuestionFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <fragment
             android:id="@+id/fragment9"
             android:name="cmsc436.changemyview.TopicQuestionFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <fragment
             android:id="@+id/fragment10"
             android:name="cmsc436.changemyview.TopicQuestionFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
