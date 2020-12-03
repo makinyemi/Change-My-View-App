@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">ChangeMyView</string>
+    <string name="app_name">Change My View</string>
+
+    <string name="topic_selector_title">Topics</string>
+    <string name="home_current_debates">Current Discussions</string>
+    <string name="profile_past_debates">Past Discussions</string>
+    <string name="debate_remaining_time">Remaining Time: </string>
+
+    <string name="btn_login">Login</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_debate">Debate</string>
+    <string name="btn_observe">Observe</string>
+    <string name="btn_submit">Submit</string>
+
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    <string name="debate_chat_msg_text_hint">Message</string>
+
+    <string name="topic_question_option_strongly_disagree">Strongly Disagree</string>
+    <string name="topic_question_option_disagree">Disagree</string>
+    <string name="topic_question_option_neutral">Neutral</string>
+    <string name="topic_question_option_agree">Agree</string>
+    <string name="topic_question_option_strongly_agree">Strongly Agree</string>
 </resources>
