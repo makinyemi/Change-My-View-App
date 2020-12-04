@@ -1,5 +1,6 @@
 package cmsc436.changemyview
 
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
@@ -10,13 +11,17 @@ class Database {
         const val CHATS = "chats"
         const val DEBATES = "debates"
 
-        val database = FirebaseDatabase.getInstance()
+        private val database = FirebaseDatabase.getInstance()
         val users = database.getReference(USERS)
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)
 
-        fun pushUser() {
-
+        fun pushUser(username: String, email: String) {
+            val id = users.push().key
+            if(id != null) {
+                val data = UserData(id, username, email)
+                users.child(id).setValue(data)
+            }
         }
 
         fun pushChat(debateID: String, uid: String, message: String) {
