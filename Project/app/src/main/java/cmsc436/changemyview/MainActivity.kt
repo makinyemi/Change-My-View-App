@@ -22,23 +22,31 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
 
+        // Handle logout button
         mLogout = findViewById(R.id.home_btn_logout)
         mLogout.setOnClickListener {
             logout()
         }
     }
 
+    /**
+     * Logs the current user out.
+     * Asks for confirmation first.
+     */
     private fun logout() {
+        // Confirm logout
         val logoutAlert = AlertDialog.Builder(this)
         logoutAlert.apply {
-            setPositiveButton(R.string.btn_logout,
-                DialogInterface.OnClickListener{dialog, id ->
-                    auth.signOut()
-                    val loginIntent = Intent(applicationContext, LoginActivity::class.java)
-                    startActivity(loginIntent)
-            })
-            setNegativeButton(R.string.btn_cancel,
-                DialogInterface.OnClickListener{dialog, id -> })
+
+            // Logout confirmation
+            setPositiveButton(R.string.btn_logout) { _, _ ->
+                auth.signOut()
+                val loginIntent = Intent(applicationContext, LoginActivity::class.java)
+                startActivity(loginIntent)
+            }
+
+            // Do nothing on cancel
+            setNegativeButton(R.string.btn_cancel) {_, _ -> }
         }
             .setTitle(R.string.btn_logout)
             .setMessage(R.string.logout_message)
@@ -49,22 +57,14 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        Log.i(TAG, "onStart()")
-
-
+        // Check if user is logged in
         if(auth.currentUser == null) {
             // No user is signed in, launch the login activity
             val loginIntent = Intent(this, LoginActivity::class.java)
             startActivity(loginIntent)
         } else {
+            // User is logged in, proceed to the home page
             currentUser = auth.currentUser!!
-        }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if(intent.hasExtra(LoginActivity.LOGIN)) {
-            auth.signOut()
         }
     }
 

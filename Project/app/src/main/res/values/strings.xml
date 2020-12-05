@@ -20,6 +20,7 @@
     <string name="login_password_hint">Password</string>
     <string name="debate_chat_msg_text_hint">Message</string>
     <string name="register_email_hint">Email Address</string>
+    <string name="register_username_hint">Username</string>
     <string name="register_repeat_password_hint">Repeat Password</string>
 
     <string name="topic_question_option_strongly_disagree">Strongly Disagree</string>
@@ -28,7 +29,19 @@
     <string name="topic_question_option_agree">Agree</string>
     <string name="topic_question_option_strongly_agree">Strongly Agree</string>
 
-    <string name="failed_login">Login Failed. Email or Password is incorrect.</string>
+    <string name="successful_login">Login Successful!</string>
+    <string name="failed_login">Login Failed! Email or Password is incorrect.</string>
+
+    <string name="successful_register">Registration Successful!</string>
+    <string name="failed_register">Registration Failed!</string>
+    <string name="register_username_exists">That username is already in use!</string>
+    <string name="register_no_email">Please enter an email</string>
+    <string name="register_invalid_email">Please enter a valid email address</string>
+    <string name="register_no_username">Please enter a username</string>
+    <string name="register_no_password">Please enter a password</string>
+    <string name="register_passwords_mismatch">Your passwords do not match</string>
+    <string name="register_password_requirements">Passwords must be at least 8 characters and contain at least 1 lowercase letter, 1 uppercase letter, and 1 number</string>
+
     <string name="empty_input">Please make sure all inputs are given!</string>
     <string name="logout_message">Do you really want to logout?</string>
 </resources>
