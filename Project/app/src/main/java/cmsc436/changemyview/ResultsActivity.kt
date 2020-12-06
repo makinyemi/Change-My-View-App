@@ -1,5 +1,6 @@
 package cmsc436.changemyview
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -75,6 +76,14 @@ class ResultsActivity : AppCompatActivity() {
 
             override fun onCancelled(p0: DatabaseError) {}
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        // Always go back to the home page after seeing results
+        val homeIntent = Intent(this, MainActivity::class.java)
+        startActivity(homeIntent)
     }
 
     companion object {
