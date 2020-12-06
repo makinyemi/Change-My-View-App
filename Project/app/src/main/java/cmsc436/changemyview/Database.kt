@@ -10,13 +10,13 @@ class Database {
         // Main database objects
         const val USERS = "users"
         const val CHATS = "chats"
+        const val AVERAGE_SCORES = "averageScores"
         const val DEBATES = "debates"
 
         // Sub-objects
         const val DEBATE_ID = "debateID"
         const val INITIAL_SCORE = "initialScore"
         const val FINAL_SCORE = "finalScore"
-        const val AVERAGE_SCORE = "averageScore"
 
 
         private val database = FirebaseDatabase.getInstance()

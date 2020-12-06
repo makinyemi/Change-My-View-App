@@ -1,26 +1,14 @@
 package cmsc436.changemyview
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
+import android.animation.ValueAnimator
 import android.view.View
-import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.LinearLayout
+import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 
-class ScoreFragment(val scoreLeft: Int = 1, val scoreRight: Int = 1) : Fragment(R.layout.score_fragment) {
+class ScoreFragment : Fragment(R.layout.score_fragment) {
 
-    private lateinit var left: View
-    private lateinit var right: View
-
-    override fun onStart() {
-        super.onStart()
-
-        // Set the score bar on start with the given (or default) values
-        updateScore(scoreLeft, scoreRight)
-    }
+    private var lastRatio: Double? = null
 
     /**
      * Updates the score bar based on the provided left and right scores.
@@ -31,8 +19,35 @@ class ScoreFragment(val scoreLeft: Int = 1, val scoreRight: Int = 1) : Fragment(
         // Hopefully catch any errors before a crash due to the below non-null assertion
         if(view != null) {
             val bar = view!!.findViewById<ProgressBar>(R.id.score_bar)
-            bar.max = scoreLeft + scoreRight
-            bar.progress = scoreLeft
+
+            var max = scoreLeft + scoreRight
+            val ratio = scoreLeft.toDouble() / max.toDouble()
+
+            // Make sure the progress bar has enough granularity to have a smooth animation
+            max *= 100
+            bar.max = max
+            val newLeft = (max * ratio).toInt()
+
+            // Always start the animation from the last progress point
+            // If this is the first update, start from the middle
+            val animationStartProgress: Int =
+                if(lastRatio != null) {
+                    (max.toDouble() * lastRatio!!).toInt()
+                } else {
+                    max / 2
+                }
+
+            lastRatio = ratio
+
+            // Setup and start the animation
+            val progressAnimation = ValueAnimator.ofInt(animationStartProgress, newLeft)
+            progressAnimation.addUpdateListener {
+                val value = it.animatedValue as Int
+                bar.progress = value
+            }
+            progressAnimation.interpolator = LinearInterpolator()
+            progressAnimation.duration = 1000
+            progressAnimation.start()
         }
     }
 

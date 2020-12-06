@@ -1,4 +1,16 @@
 {
+    "averageScores": {
+        "<debateID>": {
+            "initialScore": {
+                "left": "<initial left score>",
+                "right": "<initial right score>"
+            },
+            "finalScore": {
+                "left": "<final left score>",
+                "right": "<final right score>"
+            }
+        }
+    },
     "chats": {
         "<debateID>": {
             "chatID": "<chatID>",
@@ -19,11 +31,7 @@
             "startTime": "<timestamp -> java.utils.Date?>",
             "runtime": "<durration in minutes?>",
             "leftUIDs": {},
-            "rightUIDs": {},
-            "averageScore": {
-                "left": "<average left score>",
-                "right": "<average right score>"
-            }
+            "rightUIDs": {}
         }
     },
     "users": {
@@ -34,6 +42,10 @@
             "initialScore": {
                 "left": "<initial left score>",
                 "right": "<initial right score>"
+            },
+            "finalScore": {
+                "left": "<final left score>",
+                "right": "<final right score>"
             }
         }
     }

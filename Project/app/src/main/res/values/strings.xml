@@ -48,7 +48,6 @@
     <string name="results_label">Results</string>
     <string name="results_initial">Initial Score</string>
     <string name="results_final">Final Score</string>
-    <string name="results_difference">Change</string>
-    <string name="results_average_score">Average Score</string>
-    <string name="results_average_difference">Average change</string>
+    <string name="results_average_initial_score">Average Initial Score</string>
+    <string name="results_average_final_score">Average Final Score</string>
 </resources>
