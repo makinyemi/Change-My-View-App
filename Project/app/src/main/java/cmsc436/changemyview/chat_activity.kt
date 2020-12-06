@@ -1,12 +1,7 @@
 package cmsc436.changemyview
 
-import android.content.ClipData
 import android.os.Bundle
-import android.view.View
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -21,20 +16,39 @@ class chat_activity : AppCompatActivity() {
 
         val adapter = GroupAdapter<GroupieViewHolder>()
 
-        recyclerView.adapter = adapter
+        chatBox.adapter = adapter
+
+        adapter.add(MessageSent())
+        adapter.add(MessageReceived())
         adapter.add(MessageSent())
         adapter.add(MessageSent())
+        adapter.add(MessageSent())
+        adapter.add(MessageReceived())
+        adapter.add(MessageSent())
+        adapter.add(MessageSent())
+        adapter.add(MessageSent())
+        adapter.add(MessageReceived())
         adapter.add(MessageSent())
         adapter.add(MessageSent())
     }
 }
 
-class MessageSent : Item<GroupieViewHolder>(){
+class MessageReceived : Item<GroupieViewHolder>(){
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun getLayout(): Int {
         return R.layout.chat_from_row
+    }
+}
+
+class MessageSent : Item<GroupieViewHolder>(){
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.chat_to_row
     }
 }
