@@ -1,7 +1,6 @@
 package cmsc436.changemyview
 
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import java.util.*
 
 class Database {
@@ -48,8 +47,7 @@ class Database {
                     runtime,
                     null,
                     null,
-                    null,
-                    0, 0
+                    null
                 )
                 debates.child(debateID).setValue(data)
             }

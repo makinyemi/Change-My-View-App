@@ -2,11 +2,11 @@ package cmsc436.changemyview
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class ResultsActivity : AppCompatActivity() {
@@ -37,8 +37,19 @@ class ResultsActivity : AppCompatActivity() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         val debateID = intent.getStringExtra(Database.DEBATE_ID)
 
+        // Set the title
+        val titleLabel = findViewById<TextView>(R.id.results_debate_title)
+        Database.debates.child(debateID!!).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(DebateTopic::class.java)
+                titleLabel.text = data?.title
+            }
+
+            override fun onCancelled(p0: DatabaseError) {}
+        })
+
         // Fetch and update the user's initial and final scores
-        Database.averageScores.child(currentUser!!.uid).child(debateID!!).addListenerForSingleValueEvent(object: ValueEventListener {
+        Database.users.child(currentUser!!.uid).child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(data in snapshot.children) {
                     if(data.key == Database.INITIAL_SCORE) {
@@ -56,7 +67,7 @@ class ResultsActivity : AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {}
         })
 
-        // Fetch and update the debate topic's average score
+        // Fetch and update the debate topic's average initial score
         Database.averageScores.child(debateID).child(Database.INITIAL_SCORE).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val averageScore = snapshot.getValue(Score::class.java)!!
