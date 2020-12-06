@@ -20,6 +20,7 @@ class Database {
 
 
         private val database = FirebaseDatabase.getInstance()
+        val averageScores = database.getReference(AVERAGE_SCORES)
         val users = database.getReference(USERS)
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)

@@ -1,7 +1,6 @@
 package cmsc436.changemyview
 
 import android.animation.ValueAnimator
-import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -26,7 +25,7 @@ class ScoreFragment : Fragment(R.layout.score_fragment) {
             // Make sure the progress bar has enough granularity to have a smooth animation
             max *= 100
             bar.max = max
-            val newLeft = (max * ratio).toInt()
+            val newProgress = (max * ratio).toInt()
 
             // Always start the animation from the last progress point
             // If this is the first update, start from the middle
@@ -37,10 +36,11 @@ class ScoreFragment : Fragment(R.layout.score_fragment) {
                     max / 2
                 }
 
+            // Save last ratio in case of another update
             lastRatio = ratio
 
             // Setup and start the animation
-            val progressAnimation = ValueAnimator.ofInt(animationStartProgress, newLeft)
+            val progressAnimation = ValueAnimator.ofInt(animationStartProgress, newProgress)
             progressAnimation.addUpdateListener {
                 val value = it.animatedValue as Int
                 bar.progress = value

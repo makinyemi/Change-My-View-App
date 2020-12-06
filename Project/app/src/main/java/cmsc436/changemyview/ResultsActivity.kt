@@ -35,11 +35,10 @@ class ResultsActivity : AppCompatActivity() {
             .commit()
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val database = FirebaseDatabase.getInstance()
         val debateID = intent.getStringExtra(Database.DEBATE_ID)
 
         // Fetch and update the user's initial and final scores
-        database.getReference(Database.USERS).child(currentUser!!.uid).child(debateID!!).addListenerForSingleValueEvent(object: ValueEventListener {
+        Database.averageScores.child(currentUser!!.uid).child(debateID!!).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(data in snapshot.children) {
                     if(data.key == Database.INITIAL_SCORE) {
@@ -58,7 +57,7 @@ class ResultsActivity : AppCompatActivity() {
         })
 
         // Fetch and update the debate topic's average score
-        database.getReference(Database.AVERAGE_SCORES).child(debateID!!).child(Database.INITIAL_SCORE).addListenerForSingleValueEvent(object: ValueEventListener {
+        Database.averageScores.child(debateID).child(Database.INITIAL_SCORE).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val averageScore = snapshot.getValue(Score::class.java)!!
                 averageInitialScoreFrag.updateScore(averageScore.left, averageScore.right)
@@ -68,7 +67,7 @@ class ResultsActivity : AppCompatActivity() {
         })
 
         // Continually update the debate topic's average final score
-        database.getReference(Database.AVERAGE_SCORES).child(debateID!!).child(Database.FINAL_SCORE).addValueEventListener(object: ValueEventListener {
+        Database.averageScores.child(debateID).child(Database.FINAL_SCORE).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val averageScore = snapshot.getValue(Score::class.java)!!
                 averageFinalScoreFrag.updateScore(averageScore.left, averageScore.right)
