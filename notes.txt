@@ -1,0 +1,42 @@
+
+// Old database design
+{
+    "chats": {
+        "chatID": {
+            "chatID": "chatID",
+            "debateID": "debateID",
+            "UID": "userID",
+            "message": "lol",
+            "timestamp": ...
+        }
+    }
+}
+
+// Suggested design
+{
+    "chats": {
+        "debateID": {
+            "chatID": "lol",
+            "debateID": "debateID",
+            "UID": "userID",
+            "side": "",
+            "message": "this sux",
+            "timestamp": ...
+        },
+        "debateID2": {
+            ...
+        }
+    },
+    "debates": {
+        "debateID": {
+            "debateID": "debateID",
+            "leftUIDs": ...,
+            "rightUIDs": ...
+        }
+    }
+}
+
+val chats = FirebaseDatabase.getInstance().getReference("chats").child("debateID")
+chats.addValueListener {
+    ...
+}

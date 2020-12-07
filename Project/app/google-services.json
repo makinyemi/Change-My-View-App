@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "780795290574-6o9gioi5mtmc07c8lkltgrv0k5bo8tar.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "cmsc436.changemyview",
-            "certificate_hash": "6df7cef2a30c6672a227eac24acd9671eca9479c"
-          }
-        },
-        {
           "client_id": "780795290574-irujb3t0va0nmeut76cbgckvb3qcdm6i.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
