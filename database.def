@@ -38,14 +38,16 @@
         "uid": "<user id>",
         "email": "<email address>",
         "username": "<username>",
-        "<debateID>": {
-            "initialScore": {
-                "left": "<initial left score>",
-                "right": "<initial right score>"
-            },
-            "finalScore": {
-                "left": "<final left score>",
-                "right": "<final right score>"
+        "debates": {
+            "<debateID>": {
+                "initialScore": {
+                    "left": "<initial left score>",
+                    "right": "<initial right score>"
+                },
+                "finalScore": {
+                    "left": "<final left score>",
+                    "right": "<final right score>"
+                }
             }
         }
     }
