@@ -13,7 +13,7 @@ class Database {
         const val CHATS = "chats"
         const val AVERAGE_SCORES = "averageScores"
         const val DEBATES = "debates"
-        const val DEBATE_ID = "debateID"
+//        const val DEBATE_ID = "debateID"
 
         // Sub-objects
         const val DEBATE_ID = "debateID"
