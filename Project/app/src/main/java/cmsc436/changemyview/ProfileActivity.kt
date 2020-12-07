@@ -18,6 +18,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.profile)
         val userName = findViewById<TextView>(R.id.userName)
 
+        //Sets users name on profile page on create
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             Database.users.child(currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
