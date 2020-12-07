@@ -17,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,20 +27,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".chat_activity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".chat_activity">
         </activity>
-        <activity android:name=".TopicActivity">
-
+        <activity
+            android:name=".TopicActivity">
         </activity>
-        <activity android:name=".ProfileActivity">
-
+        <activity
+            android:name=".ProfileActivity">
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize">
