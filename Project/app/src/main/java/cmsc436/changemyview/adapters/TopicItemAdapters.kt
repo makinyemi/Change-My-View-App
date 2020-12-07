@@ -1,6 +1,7 @@
 package cmsc436.changemyview.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,15 @@ import cmsc436.changemyview.R
 import cmsc436.changemyview.model.TopicItem
 
 class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem>) :
-    RecyclerView.Adapter<TopicItemAdapters.ItemHolder>() {
+    RecyclerView.Adapter<TopicItemAdapters.ItemHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val itemHolder = LayoutInflater.from(parent.context)
             .inflate(R.layout.topic_grid_layout_list, parent, false)
 
+        itemHolder.setOnClickListener{
+
+        }
         return ItemHolder(itemHolder)
     }
 
@@ -26,7 +30,7 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-            Toast.makeText(context, topicItem.title, Toast.LENGTH_LONG)
+            topicItem
         }
     }
 
@@ -34,7 +38,10 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         return arrayList.size
     }
 
-    class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) , View.OnClickListener {
         var button: TextView? = itemView.findViewById<TextView>(R.id.topic1)
+        override fun onClick(v: View?) {
+            TODO("Not yet implemented")
+        }
     }
 }

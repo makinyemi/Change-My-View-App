@@ -12,8 +12,9 @@ import com.google.firebase.database.*
 class TopicActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gridLayoutManager: GridLayoutManager? = null
-    private var mTopicList: ArrayList<TopicItem>? = null
+    private var mTopicList: ArrayList<String>? = null
     private var topicItemAdapters: TopicItemAdapters? = null
+    private var arrayList: ArrayList<TopicItem>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,30 +25,23 @@ class TopicActivity : AppCompatActivity() {
             GridLayoutManager(applicationContext, 2, GridLayoutManager.VERTICAL, false)
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.setHasFixedSize(true)
-        mTopicList = ArrayList()
+        arrayList = ArrayList()
 
         Database.debates.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                mTopicList!!.clear()
+                arrayList!!.clear()
                 snapshot.children.forEach {
-                    val title = it.child("title").value.toString()
-                    Log.d("NewMessage", title)
-                    mTopicList!!.add(TopicItem(title))
-
+                    arrayList!!.add(TopicItem(it.child("title").value.toString()))
+                    Log.d("NewMessage", arrayList.toString())
                 }
+                topicItemAdapters = TopicItemAdapters(applicationContext, arrayList!!)
+                recyclerView?.adapter = topicItemAdapters
             }
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
-        Log.d("Size of list: ", mTopicList!!.size.toString())
-        topicItemAdapters = TopicItemAdapters(applicationContext, mTopicList!!)
-        recyclerView?.adapter = topicItemAdapters
-    }
-
-    private fun fetchTopics() {
-
 
 
     }
