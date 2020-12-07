@@ -32,6 +32,25 @@ class TopicActivity : AppCompatActivity() {
         arrayList = setTopicsToList()
         topicItemAdapters = TopicItemAdapters(applicationContext, arrayList!!)
         recyclerView?.adapter = topicItemAdapters
+
+        fetchTopics()
+    }
+
+    private fun fetchTopics() {
+        database = FirebaseDatabase.getInstance()
+        reference = database.getReference("/debates")
+
+        reference.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach {
+                    Log.d("NewMessage", it.toString())
+                }
+            }
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun setTopicsToList() : ArrayList<TopicItem>{
@@ -40,24 +59,11 @@ class TopicActivity : AppCompatActivity() {
         database = FirebaseDatabase.getInstance()
         reference = database.getReference("/debates")
 
-        reference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(p0: DataSnapshot) {
-                p0.children.forEach {
-                    Log.d("NewMessage", it.toString())
-                }
-            }
-
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
         items.add(TopicItem("To Vote or Not to Vote"))
         items.add(TopicItem("Peanut Butter is Better than Jelly"))
         items.add(TopicItem("Covid a Hoax?"))
         items.add(TopicItem("Football is "))
-        items.add(TopicItem("Peanut Butter is Better than Jelly"))
-        items.add(TopicItem("Covid a Hoax?"))
+
 
         return items
     }

@@ -15,13 +15,19 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".TopicActivity"
+            android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".TopicActivity">
+
+        </activity>
+        <activity android:name=".ProfileActivity">
+
         </activity>
     </application>
 

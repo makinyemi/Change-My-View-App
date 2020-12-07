@@ -36,15 +36,17 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.wear:wear:1.0.0'
+    implementation 'androidx.wear:wear:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation platform('com.google.firebase:firebase-bom:26.1.1')
     implementation 'com.google.firebase:firebase-database:16.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    apply plugin: 'com.google.gms.google-services'
 
     implementation "com.xwray:groupie:2.8.1"
     implementation 'com.squareup.picasso:picasso:2.71828'
-    compileOnly 'com.google.android.wearable:wearable:2.5.0'
+    compileOnly 'com.google.android.wearable:wearable:2.8.1'
 }
