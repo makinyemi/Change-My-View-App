@@ -18,9 +18,7 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         val itemHolder = LayoutInflater.from(parent.context)
             .inflate(R.layout.topic_grid_layout_list, parent, false)
 
-        itemHolder.setOnClickListener{
 
-        }
         return ItemHolder(itemHolder)
     }
 
