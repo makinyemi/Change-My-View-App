@@ -34,7 +34,7 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-//            val intent = Intent(context, TopicsQuestionsFragment::class.java)
+//            val intent = Intent(context, TopicsQuestionsFragmentV::class.java)
 //            context.startActivity(intent)
             val mTopicQuestionFragment = TopicQuestionFragment()
 
