@@ -1,10 +1,12 @@
 package cmsc436.changemyview
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -22,6 +24,13 @@ class MainActivity : AppCompatActivity() {
         mLogout = findViewById(R.id.home_btn_logout)
         mLogout.setOnClickListener {
             logout()
+        }
+
+        findViewById<FloatingActionButton>(R.id.home_btn_profile).setOnClickListener {
+            val intent = Intent(this, SurveyActivity::class.java)
+            intent.putExtra(Database.DEBATE_ID, "-MNir5jwkTgaSn3rVNqc")
+            intent.putExtra(SurveyActivity.MODE, SurveyActivity.PRE_DEBATE)
+            startActivity(intent)
         }
     }
 

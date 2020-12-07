@@ -29,6 +29,9 @@
         <activity
             android:name=".ResultsActivity">
         </activity>
+        <activity
+            android:name=".SurveyActivity">
+        </activity>
     </application>
 
 </manifest>
