@@ -49,7 +49,7 @@ class ResultsActivity : AppCompatActivity() {
         })
 
         // Fetch and update the user's initial and final scores
-        Database.users.child(currentUser!!.uid).child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
+        Database.users.child(currentUser!!.uid).child(Database.DEBATES).child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(data in snapshot.children) {
                     if(data.key == Database.INITIAL_SCORE) {
