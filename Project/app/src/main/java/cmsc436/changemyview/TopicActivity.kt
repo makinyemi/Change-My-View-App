@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.adapters.TopicItemAdapters
 import cmsc436.changemyview.model.TopicItem
 import com.google.firebase.database.*
+
 class TopicActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gridLayoutManager: GridLayoutManager? = null
