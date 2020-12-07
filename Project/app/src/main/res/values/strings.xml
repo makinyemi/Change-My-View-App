@@ -5,35 +5,43 @@
     <string name="home_current_debates">Current Discussions</string>
     <string name="profile_past_debates">Past Discussions</string>
     <string name="debate_remaining_time">Remaining Time: </string>
+    <string name="login_register">Sign Up</string>
+    <string name="register_title">Register Account</string>
 
     <string name="btn_login">Login</string>
     <string name="btn_logout">Logout</string>
     <string name="btn_debate">Debate</string>
     <string name="btn_observe">Observe</string>
     <string name="btn_submit">Submit</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_cancel">Cancel</string>
 
-    <string name="login_username_hint">Username</string>
+    <string name="login_username_hint">Email</string>
     <string name="login_password_hint">Password</string>
     <string name="debate_chat_msg_text_hint">Message</string>
+    <string name="register_email_hint">Email Address</string>
+    <string name="register_username_hint">Username</string>
+    <string name="register_repeat_password_hint">Repeat Password</string>
 
     <string name="topic_question_option_strongly_disagree">Strongly Disagree</string>
     <string name="topic_question_option_disagree">Disagree</string>
     <string name="topic_question_option_neutral">Neutral</string>
     <string name="topic_question_option_agree">Agree</string>
     <string name="topic_question_option_strongly_agree">Strongly Agree</string>
-    <string name="title_activity_chat_">Chat_Activity</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
-    <string name="hello_world">Hello Square World!</string>
-    <string name="title_activity_chat_activity">chat_activity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="successful_login">Login Successful!</string>
+    <string name="failed_login">Login Failed! Email or Password is incorrect.</string>
+
+    <string name="successful_register">Registration Successful!</string>
+    <string name="failed_register">Registration Failed!</string>
+    <string name="register_username_exists">That username is already in use!</string>
+    <string name="register_no_email">Please enter an email</string>
+    <string name="register_invalid_email">Please enter a valid email address</string>
+    <string name="register_no_username">Please enter a username</string>
+    <string name="register_no_password">Please enter a password</string>
+    <string name="register_passwords_mismatch">Your passwords do not match</string>
+    <string name="register_password_requirements">Passwords must be at least 8 characters and contain at least 1 lowercase letter, 1 uppercase letter, and 1 number</string>
+
+    <string name="empty_input">Please make sure all inputs are given!</string>
+    <string name="logout_message">Do you really want to logout?</string>
 </resources>

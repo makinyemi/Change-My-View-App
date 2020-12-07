@@ -16,12 +16,9 @@ class Database {
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)
 
-        fun pushUser(username: String, email: String) {
-            val id = users.push().key
-            if(id != null) {
-                val data = UserData(id, username, email)
-                users.child(id).setValue(data)
-            }
+        fun pushUser(uid:String, username: String, email: String) {
+            val data = UserData(uid, username, email)
+            users.child(uid).setValue(data)
         }
 
         fun pushChat(debateID: String, uid: String, message: String) {
