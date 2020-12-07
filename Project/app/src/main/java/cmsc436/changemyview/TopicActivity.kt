@@ -22,7 +22,7 @@ class TopicActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.my_topic_recycler_view)
         gridLayoutManager =
-            GridLayoutManager(applicationContext, 2, GridLayoutManager.VERTICAL, false)
+            GridLayoutManager(applicationContext, 3, GridLayoutManager.VERTICAL, false)
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.setHasFixedSize(true)
         arrayList = ArrayList()
