@@ -7,7 +7,7 @@ data class DebateTopic(
     val title: String = "",
     val questions: List<String> = emptyList(),
     val runtime: Int = 0,
-    val startTime: Date? = null,
+    val startTime: String? = null,
 ) {
 
     companion object {
