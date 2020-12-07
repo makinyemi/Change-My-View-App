@@ -7,14 +7,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.adapters.TopicItemAdapters
 import cmsc436.changemyview.model.TopicItem
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class TopicActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gridLayoutManager: GridLayoutManager? = null
     private var mTopicList: ArrayList<TopicItem>? = null
     private var topicItemAdapters: TopicItemAdapters? = null
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topics_fragment)
@@ -26,7 +28,8 @@ class TopicActivity : AppCompatActivity() {
         recyclerView?.setHasFixedSize(true)
         mTopicList = ArrayList()
 
-        Database.debates.addListenerForSingleValueEvent(object: ValueEventListener {
+        //Gets Debate Topics and
+        Database.debates.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mTopicList!!.clear()
                 snapshot.children.forEach {

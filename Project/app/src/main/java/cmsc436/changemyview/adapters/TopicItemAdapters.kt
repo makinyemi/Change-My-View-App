@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.R
 import cmsc436.changemyview.TopicQuestionFragment
+import cmsc436.changemyview.VoteFragment
 import cmsc436.changemyview.model.TopicItem
+
 
 class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem>) :
     RecyclerView.Adapter<TopicItemAdapters.ItemHolder>(){
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val itemHolder = LayoutInflater.from(parent.context)
@@ -25,11 +30,21 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         var topicItem:TopicItem = arrayList[position]
 
+
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-            val intent = Intent(context, TopicQuestionFragment::class.java)
-            context.startActivity(intent)
+//            val intent = Intent(context, TopicQuestionFragment::class.java)
+//            context.startActivity(intent)
+            val mTopicQuestionFragment = TopicQuestionFragment()
+
+            val act: AppCompatActivity = it.context as AppCompatActivity
+            act.supportFragmentManager
+                .beginTransaction()
+                .add(R.id.topic_question_layout, mTopicQuestionFragment)
+                .addToBackStack(null)
+                .commit()
+
         }
     }
 
