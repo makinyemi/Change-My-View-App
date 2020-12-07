@@ -34,12 +34,12 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-//            val intent = Intent(context, TopicQuestionFragment::class.java)
+//            val intent = Intent(context, TopicsQuestionsFragment::class.java)
 //            context.startActivity(intent)
             val mTopicQuestionFragment = TopicQuestionFragment()
 
-            val act: AppCompatActivity = it.context as AppCompatActivity
-            act.supportFragmentManager
+            val activity: AppCompatActivity = it.context as AppCompatActivity
+            activity.supportFragmentManager
                 .beginTransaction()
                 .add(R.id.topic_question_layout, mTopicQuestionFragment)
                 .addToBackStack(null)
