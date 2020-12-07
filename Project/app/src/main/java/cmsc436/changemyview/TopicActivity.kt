@@ -12,9 +12,8 @@ import com.google.firebase.database.*
 class TopicActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gridLayoutManager: GridLayoutManager? = null
-    private var mTopicList: ArrayList<String>? = null
+    private var mTopicList: ArrayList<TopicItem>? = null
     private var topicItemAdapters: TopicItemAdapters? = null
-    private var arrayList: ArrayList<TopicItem>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +24,16 @@ class TopicActivity : AppCompatActivity() {
             GridLayoutManager(applicationContext, 3, GridLayoutManager.VERTICAL, false)
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.setHasFixedSize(true)
-        arrayList = ArrayList()
+        mTopicList = ArrayList()
 
         Database.debates.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                arrayList!!.clear()
+                mTopicList!!.clear()
                 snapshot.children.forEach {
-                    arrayList!!.add(TopicItem(it.child("title").value.toString()))
-                    Log.d("NewMessage", arrayList.toString())
+                    mTopicList!!.add(TopicItem(it.child("title").value.toString()))
+                    Log.d("NewMessage", mTopicList.toString())
                 }
-                topicItemAdapters = TopicItemAdapters(applicationContext, arrayList!!)
+                topicItemAdapters = TopicItemAdapters(applicationContext, mTopicList!!)
                 recyclerView?.adapter = topicItemAdapters
             }
 

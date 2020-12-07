@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.R
+import cmsc436.changemyview.TopicQuestionFragment
 import cmsc436.changemyview.model.TopicItem
 
 class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem>) :
@@ -17,7 +18,6 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val itemHolder = LayoutInflater.from(parent.context)
             .inflate(R.layout.topic_grid_layout_list, parent, false)
-
 
         return ItemHolder(itemHolder)
     }
@@ -28,7 +28,8 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-            topicItem
+            val intent = Intent(context, TopicQuestionFragment::class.java)
+            context.startActivity(intent)
         }
     }
 
@@ -36,10 +37,13 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         return arrayList.size
     }
 
+
     class ItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) , View.OnClickListener {
         var button: TextView? = itemView.findViewById<TextView>(R.id.topic1)
+
+
+
         override fun onClick(v: View?) {
-            TODO("Not yet implemented")
         }
     }
 }
