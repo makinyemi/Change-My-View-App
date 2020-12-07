@@ -195,7 +195,7 @@ class SurveyActivity: AppCompatActivity() {
 
         val score = q1 + q2 + q3 + q4 + q5
 
-        return Score(5 - score, 5 + score)
+        return Score(10 - score, 10 + score)
     }
 
     companion object {
