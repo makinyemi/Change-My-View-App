@@ -28,6 +28,8 @@
     <string name="topic_question_option_neutral">Neutral</string>
     <string name="topic_question_option_agree">Agree</string>
     <string name="topic_question_option_strongly_agree">Strongly Agree</string>
+    <string name="title_activity_topics">TopicsActivity</string>
+
 
     <string name="successful_login">Login Successful!</string>
     <string name="failed_login">Login Failed! Email or Password is incorrect.</string>
