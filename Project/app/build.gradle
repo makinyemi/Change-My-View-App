@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 
 androidExtensions {
-    experiemental = true
+    experimental = true
 }
 
 android {

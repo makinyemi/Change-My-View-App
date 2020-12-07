@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cmsc436.changemyview">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
 
     <application
@@ -19,7 +21,6 @@
 
         <activity
             android:name=".chat_activity"
-            android:label="@string/title_activity_chat_activity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +33,6 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
