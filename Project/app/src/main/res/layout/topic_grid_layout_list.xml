@@ -4,7 +4,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="8dp"
     app:cardElevation="5dp"
     app:cardPreventCornerOverlap="true"
@@ -13,14 +12,16 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="90dp"
-        android:gravity="center"
-        android:padding="10dp">
+        android:gravity="center">
 
         <TextView
             android:id="@+id/topic1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
+            android:padding="10dp"
             android:text="Topic 1"
             android:textStyle="bold" />
 
