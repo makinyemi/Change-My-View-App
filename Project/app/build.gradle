@@ -50,4 +50,5 @@ dependencies {
     implementation "com.xwray:groupie:2.8.1"
     implementation 'com.squareup.picasso:picasso:2.71828'
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
+
 }
