@@ -13,12 +13,17 @@
     },
     "chats": {
         "<debateID>": {
-            "chatID": "<chatID>",
-            "debateID": "<debateID>",
-            "uid": "<uid>",
-            "side": "<debate side>",
-            "message": "<message text>",
-            "timestamp": "<timestamp -> java.utils.Date?>"
+            "<chatID>" :{
+                "chatID": "<chatID>",
+                "debateID": "<debateID>",
+                "uid": "<uid>",
+                "side": "<debate side>",
+                "message": "<message text>",
+                "timestamp": "<timestamp -> java.utils.Date?>"
+            },
+            "<chatID2>": {
+                ...
+            }
         }
     },
     "debates": {
@@ -29,9 +34,7 @@
                 "<question number>": "<question text>"
             },
             "startTime": "<timestamp -> java.utils.Date?>",
-            "runtime": "<durration in minutes?>",
-            "leftUIDs": {},
-            "rightUIDs": {}
+            "runtime": "<durration in minutes?>"
         }
     },
     "users": {
@@ -47,7 +50,9 @@
                 "finalScore": {
                     "left": "<final left score>",
                     "right": "<final right score>"
-                }
+                },
+                "side": "<left | right>",
+                "debateID": "<debateID>"
             }
         }
     }

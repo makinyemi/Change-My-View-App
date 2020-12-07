@@ -1,6 +1,7 @@
 package cmsc436.changemyview
 
 import com.google.firebase.database.*
+import java.time.LocalDateTime
 import java.util.*
 
 class Database {
@@ -11,29 +12,31 @@ class Database {
         const val CHATS = "chats"
         const val AVERAGE_SCORES = "averageScores"
         const val DEBATES = "debates"
+        const val QUEUE = "queue"
 
         // Sub-objects
         const val DEBATE_ID = "debateID"
         const val INITIAL_SCORE = "initialScore"
         const val FINAL_SCORE = "finalScore"
+        const val SIDE = "side"
+        const val LEFT = "left"
+        const val RIGHT = "right"
+        const val PARTICIPATION = "participation"
+        const val DEBATING = "debating"
+        const val OBSERVING = "observing"
+
+        const val NONE = "none"
 
         private val database = FirebaseDatabase.getInstance()
         val averageScores = database.getReference(AVERAGE_SCORES)
         val users = database.getReference(USERS)
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)
+        val queue = database.getReference(QUEUE)
 
         fun pushUser(uid:String, username: String, email: String) {
             val data = UserData(uid, username, email)
             users.child(uid).setValue(data)
-        }
-
-        fun pushChat(debateID: String, uid: String, message: String) {
-            val chatID = chats.push().key
-            if(chatID != null) {
-                val data = ChatMessage(chatID, debateID, uid, message, Date())
-                chats.child(chatID).setValue(data)
-            }
         }
 
         fun pushDebateTopic(title: String, questions: List<String>, runtime: Int) {
@@ -45,8 +48,6 @@ class Database {
                     questions,
                     runtime,
                     null,
-                    null,
-                    null
                 )
                 debates.child(debateID).setValue(data)
             }
@@ -54,21 +55,17 @@ class Database {
 
         fun startDebate(debateID: String) {
             val debate = debates.child(debateID)
-            debate.child(DebateTopic.START_TIME).setValue(Date())
+            debate.child(DebateTopic.START_TIME).setValue(LocalDateTime.now().toString())
         }
 
-        fun addUserToDebateSide(debateID: String, uid: String, side: Boolean) {
-            val debate = debates.child(debateID)
+        fun addUserToDebateSide(debateID: String, uid: String, left: Boolean) {
+            val side = users.child(DEBATES).child(debateID).child(SIDE)
+            side.setValue(if(left){ LEFT } else { RIGHT })
+        }
 
-            // side == true -> places user on the LEFT team
-            if(side) {
-                debate.child(DebateTopic.LEFT_UIDS).push().setValue(uid)
-            }
-
-            // side == false -> places user on the RIGHT team
-            else {
-                debate.child(DebateTopic.RIGHT_UIDS).push().setValue(uid)
-            }
+        fun addUserParticipationMethod(debateID: String, uid: String, debating: Boolean) {
+            val side = users.child(DEBATES).child(debateID).child(PARTICIPATION)
+            side.setValue(if(debating){ DEBATING } else { OBSERVING })
         }
     }
 

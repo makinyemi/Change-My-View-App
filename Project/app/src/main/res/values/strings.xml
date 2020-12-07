@@ -50,4 +50,9 @@
     <string name="results_final">Final Score</string>
     <string name="results_average_initial_score">Average Initial Score</string>
     <string name="results_average_final_score">Average Final Score</string>
+
+    <string name="queue_title">Waiting for enough participants</string>
+    <string name="queue_current_num_participants">Current</string>
+    <string name="queue_min_num_participants">Minimum</string>
+    <string name="queue_max_num_participants">Maximum</string>
 </resources>

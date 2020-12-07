@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SurveyActivity::class.java)
             intent.putExtra(Database.DEBATE_ID, "-MNir5jwkTgaSn3rVNqc")
             intent.putExtra(SurveyActivity.MODE, SurveyActivity.PRE_DEBATE)
+            intent.putExtra(SurveyActivity.PARTICIPATION, SurveyActivity.DEBATING)
             startActivity(intent)
         }
     }

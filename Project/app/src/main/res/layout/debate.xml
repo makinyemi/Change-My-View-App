@@ -77,7 +77,8 @@
             android:id="@+id/debate_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            android:visibility="visible" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

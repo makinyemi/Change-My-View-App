@@ -8,8 +8,6 @@ data class DebateTopic(
     val questions: List<String> = emptyList(),
     val runtime: Int = 0,
     val startTime: Date? = null,
-    val leftUIDs: List<String>? = null,
-    val rightUIDs: List<String>? = null
 ) {
 
     companion object {
@@ -18,7 +16,5 @@ data class DebateTopic(
         const val QUESTIONS = "questions"
         const val RUNTIME = "runtime"
         const val START_TIME = "startTime"
-        const val LEFT_UIDS = "leftUIDs"
-        const val RIGHT_UIDS = "rightUIDs"
     }
 }
