@@ -44,4 +44,10 @@
 
     <string name="empty_input">Please make sure all inputs are given!</string>
     <string name="logout_message">Do you really want to logout?</string>
+
+    <string name="results_label">Results</string>
+    <string name="results_initial">Initial Score</string>
+    <string name="results_final">Final Score</string>
+    <string name="results_average_initial_score">Average Initial Score</string>
+    <string name="results_average_final_score">Average Final Score</string>
 </resources>
