@@ -8,15 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.adapters.TopicItemAdapters
 import cmsc436.changemyview.model.TopicItem
 import com.google.firebase.database.*
-
 class TopicActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var gridLayoutManager: GridLayoutManager? = null
     private var arrayList:ArrayList<TopicItem> ? = null
     private var topicItemAdapters: TopicItemAdapters? = null
-    private lateinit var database:FirebaseDatabase
-    private lateinit var reference:DatabaseReference
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,36 +24,35 @@ class TopicActivity : AppCompatActivity() {
         recyclerView?.layoutManager = gridLayoutManager
         recyclerView?.setHasFixedSize(true)
 
-        arrayList = ArrayList()
-        arrayList = setTopicsToList()
-        topicItemAdapters = TopicItemAdapters(applicationContext, arrayList!!)
-        recyclerView?.adapter = topicItemAdapters
+
 
         fetchTopics()
     }
 
     private fun fetchTopics() {
-        database = FirebaseDatabase.getInstance()
-        reference = database.getReference("/debates")
+        arrayList = ArrayList()
 
-        reference.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(p0: DataSnapshot) {
-                p0.children.forEach {
-                    Log.d("NewMessage", it.toString())
-                }
-            }
-            override fun onCancelled(p0: DatabaseError) {
+        Database.debates.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
 
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val title = snapshot.getValue(DebateTopic::class.java)
+                Log.d("NewMessage", snapshot.toString())
+                if (title != null) {
+                    arrayList!!.add(TopicItem(title.title))
+                }
+            }
         })
+        topicItemAdapters = TopicItemAdapters(applicationContext, arrayList!!)
+        recyclerView?.adapter = topicItemAdapters
+
     }
 
     private fun setTopicsToList() : ArrayList<TopicItem>{
 
         var items:ArrayList<TopicItem> = ArrayList()
-        database = FirebaseDatabase.getInstance()
-        reference = database.getReference("/debates")
 
         items.add(TopicItem("To Vote or Not to Vote"))
         items.add(TopicItem("Peanut Butter is Better than Jelly"))

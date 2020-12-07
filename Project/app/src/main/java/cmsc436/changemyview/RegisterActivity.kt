@@ -137,7 +137,7 @@ class RegisterActivity: AppCompatActivity() {
                             ).show()
 
                             // Add the user to the database
-                            Database.pushUser(task.result!!.user.uid, username!!, email)
+                            task.result!!.user?.uid?.let { Database.pushUser(it, username!!, email) }
 
                             val loginIntent = Intent(this, LoginActivity::class.java)
                             startActivity(loginIntent)
