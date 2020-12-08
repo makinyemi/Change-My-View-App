@@ -1,0 +1,2 @@
+cmsc436/changemyview/BuildConfig.java
+ cmsc436.changemyview.BuildConfig
