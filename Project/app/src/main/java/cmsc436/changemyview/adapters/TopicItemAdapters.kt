@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import cmsc436.changemyview.Database
 import cmsc436.changemyview.R
+import cmsc436.changemyview.SurveyActivity
 import cmsc436.changemyview.TopicQuestionFragment
 import cmsc436.changemyview.VoteFragment
 import cmsc436.changemyview.model.TopicItem
@@ -34,17 +37,12 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-//            val intent = Intent(context, TopicsQuestionsFragment::class.java)
-//            context.startActivity(intent)
-            val mTopicQuestionFragment = TopicQuestionFragment()
-
-            val activity: AppCompatActivity = it.context as AppCompatActivity
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(R.id.topic_question_layout, mTopicQuestionFragment)
-                .addToBackStack(null)
-                .commit()
-
+            val intent = Intent(context, SurveyActivity::class.java)
+            intent.putExtra(Database.DEBATE_ID,topicItem.id)
+            intent.putExtra(SurveyActivity.PARTICIPATION,topicItem.participation)
+            intent.putExtra(SurveyActivity.MODE,SurveyActivity.PRE_DEBATE)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
         }
     }
 

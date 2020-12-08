@@ -2,6 +2,7 @@ package cmsc436.changemyview
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -13,6 +14,7 @@ class Database {
         const val CHATS = "chats"
         const val AVERAGE_SCORES = "averageScores"
         const val DEBATES = "debates"
+//        const val DEBATE_ID = "debateID"
         const val QUEUE = "queue"
 
         // Sub-objects
@@ -39,7 +41,15 @@ class Database {
             val data = UserData(uid, username, email)
             users.child(uid).setValue(data)
         }
-      
+
+        fun pushChat(debateID: String, uid: String, message: String) {
+            val chatID = chats.push().key
+            if(chatID != null) {
+                val data = ChatMessage(chatID, debateID, uid, message, LocalDateTime.now().toString())
+                chats.child(chatID).setValue(data)
+            }
+        }
+
         fun pushDebateTopic(title: String, questions: List<String>, runtime: Int) {
             val debateID = debates.push().key
             if(debateID != null) {
