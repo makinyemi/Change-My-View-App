@@ -57,4 +57,8 @@
     <string name="queue_current_num_participants">Current</string>
     <string name="queue_min_num_participants">Minimum</string>
     <string name="queue_max_num_participants">Maximum</string>
+    <string name="queue_btn_launch">Launch Debate</string>
+    <string name="queue_min_to_start">2</string>
+    <string name="queue_for">For</string>
+    <string name="queue_against">Against</string>
 </resources>

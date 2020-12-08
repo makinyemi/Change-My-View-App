@@ -31,6 +31,9 @@ class SurveyActivity: AppCompatActivity() {
     private var left: Int = 0
     private var right: Int = 0
 
+    private var averageInitialScores: Score? = null
+    private var averageFinalScores: Score? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.topic_survey)
@@ -82,26 +85,51 @@ class SurveyActivity: AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {}
         })
 
+        // Continually update the average initial and final scores
+        Database.averageScores.child(debateID).addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(data in snapshot.children) {
+                    if(data.key == Database.INITIAL_SCORE) {
+                        averageInitialScores = data.getValue(Score::class.java)
+                    }
+
+                    else if(data.key == Database.FINAL_SCORE) {
+                        averageFinalScores = data.getValue(Score::class.java)
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {}
+        })
+
         btnSubmit.setOnClickListener {
             submitBtn()
         }
     }
 
     private fun submitBtn() {
-        Log.i(TAG, "Clicked")
-
         // Calculate score
         val score = calculateScore()
-        Log.i(TAG, "Left: ${score.left}, Right: ${score.right}")
 
+        // BEFORE THE DEBATE
         if(mode == PRE_DEBATE) {
-            // Write score to database
+            // Write score to user database
             Database.users
                 .child(uid)
                 .child(Database.DEBATES)
                 .child(debateID)
                 .child(Database.INITIAL_SCORE)
                 .setValue(score)
+
+            // Write score to average database
+            var newAverage = score
+            if(averageInitialScores != null) {
+                newAverage = Score(averageInitialScores!!.left + score.left, averageInitialScores!!.right + score.right)
+            }
+            Database.averageScores
+                .child(debateID)
+                .child(Database.INITIAL_SCORE)
+                .setValue(newAverage)
 
             // Determine user side
             var side = Database.NONE
@@ -175,14 +203,36 @@ class SurveyActivity: AppCompatActivity() {
                 .child(Database.PARTICIPATION)
                 .setValue(participation)
 
+            // Go to the waiting queue for enough participants
             val queueIntent = Intent(this, QueueActivity::class.java)
             queueIntent.putExtra(Database.DEBATE_ID, debateID)
             startActivity(queueIntent)
         }
 
+        // AFTER THE DEBATE IS OVER
         else if(mode == POST_DEBATE) {
+            // Write score to database
+            Database.users
+                .child(uid)
+                .child(Database.DEBATES)
+                .child(debateID)
+                .child(Database.FINAL_SCORE)
+                .setValue(score)
+
+            // Write score to average database
+            var newAverage = score
+            if(averageFinalScores != null) {
+                newAverage = Score(averageFinalScores!!.left + score.left, averageFinalScores!!.right + score.right)
+            }
+            Database.averageScores
+                .child(debateID)
+                .child(Database.FINAL_SCORE)
+                .setValue(newAverage)
+
             // Start results activity
-            // TODO
+            val resultsIntent = Intent(this, ResultsActivity::class.java)
+            resultsIntent.putExtra(Database.DEBATE_ID, debateID)
+            startActivity(resultsIntent)
         }
     }
 
@@ -195,7 +245,7 @@ class SurveyActivity: AppCompatActivity() {
 
         val score = q1 + q2 + q3 + q4 + q5
 
-        return Score(5 - score, 5 + score)
+        return Score(10 - score, 10 + score)
     }
 
     companion object {
