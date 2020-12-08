@@ -20,6 +20,7 @@ class QueueActivity: AppCompatActivity() {
     private lateinit var side: String
     private lateinit var queueData: QueueData
 
+    private lateinit var debateTitle: TextView
     private lateinit var sideIndicator: TextView
     private lateinit var againstParticipants: TextView
     private lateinit var forParticipants: TextView
@@ -61,10 +62,23 @@ class QueueActivity: AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {}
         })
 
+        debateTitle = findViewById(R.id.queue_debate_title)
         sideIndicator = findViewById(R.id.queue_side_indicator)
         againstParticipants = findViewById(R.id.queue_current_against)
         forParticipants = findViewById(R.id.queue_current_for)
         btnLaunch = findViewById(R.id.queue_btn_launch)
+
+        // Set the debate title
+        Database.debates.child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(DebateTopic::class.java)
+                if(data != null) {
+                    debateTitle.text = data.title
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
 
         // Continually update the numerical presentation of the waiting area
         Database.queue.child(debateID).addValueEventListener(object: ValueEventListener {
