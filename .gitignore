@@ -1,0 +1,13 @@
+# Ignore gradle specific configs
+.gradle
+
+# Ignore IntelliJ specific configs
+.idea
+
+# Ignore all build directories from repo
+# Had to do this to cut down the amount of files to-be-tracked and to
+# weed out files with names that were too long to track
+build
+
+# Ignore local properties
+local.properties

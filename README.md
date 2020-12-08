@@ -1,8 +1,10 @@
-# Change-My-View-App
-Michael Akinyemi Group#: 57 Project Name: Change My View
+# Change My View App
+A debate platform to organize debates among people with similar midesets 
+against people with the opposing view.
 
 ## Group Members
-Jacob Wiersma
+Michael Akinyemi\
+Jacob Wiersma\
 Mohammed Arafat
 
 ### TA
