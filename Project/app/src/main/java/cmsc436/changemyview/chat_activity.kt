@@ -5,6 +5,7 @@ import android.nfc.Tag
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,8 @@ class chat_activity : AppCompatActivity() {
     lateinit var uid : String
     lateinit var timer : TextView
     lateinit var countDownTimer : CountDownTimer
+    lateinit var team : String
+    lateinit var participation : String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,10 +40,32 @@ class chat_activity : AppCompatActivity() {
         setContentView(R.layout.debate)
 
         dID = intent.getStringExtra(Database.DEBATE_ID).toString()
-
         chatBox.adapter = adapter
+        uid = FirebaseAuth.getInstance().currentUser?.uid!!
+        val reference = Database.users.child(uid).child(Database.DEBATES).child(dID)
+        
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (px in snapshot.children) {
+                    if (px.key.equals(Database.PARTICIPATION)){
+                        participation = px.getValue(String :: class.java).toString()
+                        if (participation != Database.DEBATING) {
+                            message_box.visibility = View.GONE
+                        }
+                    }
+                    else if (px.key.equals(Database.SIDE)) {
+                        team = px.getValue(String :: class.java).toString()
+                    }
+                }
+            }
 
-        //uid = FirebaseAuth.getInstance().currentUser?.uid!!
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+
         timer = findViewById(R.id.debate_time_rem)
 
         startTimer(3600000 , dID)
@@ -92,7 +117,15 @@ class chat_activity : AppCompatActivity() {
                 val chatMessage = p0.getValue(ChatMessage::class.java)
 
                 if (chatMessage != null) {
+
+                    if (team == chatMessage.team) {
+                        adapter.add(MessageSent(chatMessage.message))
+                    }
+
+                    else
+
                     adapter.add(MessageReceived(chatMessage.message))
+
                 }
 
             }
@@ -127,7 +160,7 @@ class chat_activity : AppCompatActivity() {
 
         val reference = FirebaseDatabase.getInstance().getReference("/chats").push()
 
-        val chatMessage = ChatMessage(reference.key!!, debateID, uid!!, chatText, timeStamp.toString())
+        val chatMessage = ChatMessage(reference.key!!, debateID, uid!!, chatText, timeStamp.toString(), team)
 
         if (debateID != null) {
             Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
