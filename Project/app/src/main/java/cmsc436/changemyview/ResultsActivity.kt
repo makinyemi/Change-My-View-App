@@ -22,17 +22,10 @@ class ResultsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.results)
 
-        initialScoreFrag = ScoreFragment()
-        finalScoreFrag = ScoreFragment()
-        averageInitialScoreFrag = ScoreFragment()
-        averageFinalScoreFrag = ScoreFragment()
-
-        fragManager.beginTransaction()
-            .add(R.id.results_initial_score_fragment, initialScoreFrag)
-            .add(R.id.results_final_score_fragment, finalScoreFrag)
-            .add(R.id.results_average_initial_score_fragment, averageInitialScoreFrag)
-            .add(R.id.results_average_final_score_fragment, averageFinalScoreFrag)
-            .commit()
+        initialScoreFrag = supportFragmentManager.findFragmentById(R.id.results_initial_score_fragment) as ScoreFragment
+        finalScoreFrag = supportFragmentManager.findFragmentById(R.id.results_final_score_fragment) as ScoreFragment
+        averageInitialScoreFrag = supportFragmentManager.findFragmentById(R.id.results_average_initial_score_fragment) as ScoreFragment
+        averageFinalScoreFrag = supportFragmentManager.findFragmentById(R.id.results_average_final_score_fragment) as ScoreFragment
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         val debateID = intent.getStringExtra(Database.DEBATE_ID)

@@ -28,6 +28,8 @@
     <string name="topic_question_option_neutral">Neutral</string>
     <string name="topic_question_option_agree">Agree</string>
     <string name="topic_question_option_strongly_agree">Strongly Agree</string>
+    <string name="title_activity_topics">TopicsActivity</string>
+
 
     <string name="successful_login">Login Successful!</string>
     <string name="failed_login">Login Failed! Email or Password is incorrect.</string>
@@ -50,4 +52,13 @@
     <string name="results_final">Final Score</string>
     <string name="results_average_initial_score">Average Initial Score</string>
     <string name="results_average_final_score">Average Final Score</string>
+
+    <string name="queue_title">Waiting for enough participants</string>
+    <string name="queue_current_num_participants">Current</string>
+    <string name="queue_min_num_participants">Minimum</string>
+    <string name="queue_max_num_participants">Maximum</string>
+    <string name="queue_btn_launch">Launch Debate</string>
+    <string name="queue_min_to_start">2</string>
+    <string name="queue_for">For</string>
+    <string name="queue_against">Against</string>
 </resources>

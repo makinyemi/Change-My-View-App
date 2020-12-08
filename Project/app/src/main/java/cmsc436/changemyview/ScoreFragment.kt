@@ -1,6 +1,7 @@
 package cmsc436.changemyview
 
 import android.animation.ValueAnimator
+import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -19,8 +20,17 @@ class ScoreFragment : Fragment(R.layout.score_fragment) {
         if(view != null) {
             val bar = view!!.findViewById<ProgressBar>(R.id.score_bar)
 
-            var max = scoreLeft + scoreRight
-            val ratio = scoreLeft.toDouble() / max.toDouble()
+            var left = scoreLeft
+            var right = scoreRight
+
+            // Handle all neutral case
+            if(left == 0 && right == 0) {
+                left = 1
+                right = 1
+            }
+
+            var max = left + right
+            var ratio = left.toDouble() / max.toDouble()
 
             // Make sure the progress bar has enough granularity to have a smooth animation
             max *= 100
