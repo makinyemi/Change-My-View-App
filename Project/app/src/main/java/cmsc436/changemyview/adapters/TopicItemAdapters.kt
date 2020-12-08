@@ -8,15 +8,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import cmsc436.changemyview.Database
 import cmsc436.changemyview.R
 import cmsc436.changemyview.SurveyActivity
 import cmsc436.changemyview.TopicQuestionFragment
+import cmsc436.changemyview.VoteFragment
 import cmsc436.changemyview.model.TopicItem
+
 
 class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem>) :
     RecyclerView.Adapter<TopicItemAdapters.ItemHolder>(){
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val itemHolder = LayoutInflater.from(parent.context)
@@ -27,6 +32,7 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         var topicItem:TopicItem = arrayList[position]
+
 
         holder.button!!.text = topicItem.title
 
