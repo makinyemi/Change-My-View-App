@@ -24,7 +24,6 @@ class ProfileActivity : AppCompatActivity() {
             Database.users.child(currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val usersName = snapshot.child("username").value.toString()
-                        Log.d("Ok",snapshot.child("username").value.toString())
                         userName.text = usersName
                     }
 
