@@ -17,6 +17,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile)
         val userName = findViewById<TextView>(R.id.userName)
+        val email = findViewById<TextView>(R.id.profile_email)
 
         //Sets users name on profile page on create
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -24,8 +25,10 @@ class ProfileActivity : AppCompatActivity() {
             Database.users.child(currentUser!!.uid).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val usersName = snapshot.child("username").value.toString()
+                        val emailData = snapshot.child("email").value.toString()
                         Log.d("Ok",snapshot.child("username").value.toString())
                         userName.text = usersName
+                        email.text = emailData
                     }
 
                     override fun onCancelled(error: DatabaseError) {

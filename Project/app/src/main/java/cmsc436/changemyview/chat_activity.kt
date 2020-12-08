@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +32,7 @@ class chat_activity : AppCompatActivity() {
     lateinit var dID : String
     lateinit var uid : String
     lateinit var title: TextView
-    lateinit var timer : TextView
+    lateinit var btnDone: Button
     lateinit var countDownTimer : CountDownTimer
     lateinit var team : String
     lateinit var participation : String
@@ -46,6 +47,7 @@ class chat_activity : AppCompatActivity() {
         chatBox.adapter = adapter
         uid = FirebaseAuth.getInstance().currentUser?.uid!!
         val reference = Database.users.child(uid).child(Database.DEBATES).child(dID)
+
         
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -69,7 +71,7 @@ class chat_activity : AppCompatActivity() {
         })
 
         title = findViewById(R.id.debate_title)
-        timer = findViewById(R.id.debate_time_rem)
+        btnDone = findViewById(R.id.debate_btn_done)
 
         Database.debates.child(dID).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -77,14 +79,6 @@ class chat_activity : AppCompatActivity() {
                 if(data != null) {
                     // Set the title
                     title.text = data.title
-
-                    // Calculate remaining time
-                    val formatter = DateTimeFormatter.ISO_DATE_TIME
-                    val startTime: LocalDateTime = LocalDateTime.parse(data.startTime, formatter)
-                    val currentTime = LocalDateTime.now()
-                    val elapsed = currentTime.nano - startTime.nano
-                    remTime = 3600000 - (elapsed / 1000000)
-                    startTimer(remTime.toLong() , dID)
                 }
             }
 
@@ -97,34 +91,17 @@ class chat_activity : AppCompatActivity() {
         }
 
 
+        btnDone.setOnClickListener{
+            val surveyIntent = Intent(this, SurveyActivity::class.java)
+            surveyIntent.putExtra(Database.DEBATE_ID, dID)
+            surveyIntent.putExtra(SurveyActivity.MODE, SurveyActivity.POST_DEBATE)
+            startActivity(surveyIntent)
+        }
+
+
         listenForMessages()
 
     }
-
-
-    private fun startTimer(runtime : Long, debateID : String) {
-
-        val surveyIntent = Intent(this, SurveyActivity::class.java)
-        surveyIntent.putExtra(Database.DEBATE_ID, debateID)
-        surveyIntent.putExtra(SurveyActivity.MODE, SurveyActivity.POST_DEBATE)
-
-        countDownTimer = object : CountDownTimer(runtime, 1000){
-
-            override fun onTick(millisUntilFinished: Long) {
-                val timeLeft = millisUntilFinished / 1000
-                timer.text = timeLeft.toString()
-                Log.i("CMV", "TIMER: $timeLeft")
-            }
-
-            override fun onFinish() {
-                Log.i("CMV", "Done!")
-                startActivity(surveyIntent)
-            }
-
-        }
-        countDownTimer.start()
-    }
-
 
     private fun listenForMessages(){
 
@@ -186,11 +163,11 @@ class chat_activity : AppCompatActivity() {
 
         val chatMessage = ChatMessage(reference.key!!, debateID, uid!!, chatText, timeStamp.toString(), team)
 
-        if (debateID != null) {
-            Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
-                Log.d("", "Saved message: ${reference.key!!}")
-            }
+        Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
+            Log.d("", "Saved message: ${reference.key!!}")
         }
+
+        chat_edit_message.setText("")
 
     }
 
