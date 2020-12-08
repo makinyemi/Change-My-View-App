@@ -33,6 +33,7 @@ class chat_activity : AppCompatActivity() {
     lateinit var countDownTimer : CountDownTimer
     lateinit var team : String
     lateinit var participation : String
+    lateinit var remTime: Int
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +69,17 @@ class chat_activity : AppCompatActivity() {
 
         timer = findViewById(R.id.debate_time_rem)
 
+        Database.debates.child(dID).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(DebateTopic::class.java)
+                if(data != null) {
+                    
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
         startTimer(3600000 , dID)
 
         // send messages to the database
@@ -99,6 +111,7 @@ class chat_activity : AppCompatActivity() {
             }
 
         }
+        countDownTimer.start()
     }
 
 
