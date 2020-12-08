@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import cmsc436.changemyview.Database
 import cmsc436.changemyview.R
+import cmsc436.changemyview.SurveyActivity
 import cmsc436.changemyview.TopicQuestionFragment
 import cmsc436.changemyview.model.TopicItem
 
@@ -28,7 +31,11 @@ class TopicItemAdapters(var context: Context, var arrayList: ArrayList<TopicItem
         holder.button!!.text = topicItem.title
 
         holder.button!!.setOnClickListener {
-            val intent = Intent(context, TopicQuestionFragment::class.java)
+            val intent = Intent(context, SurveyActivity::class.java)
+            intent.putExtra(Database.DEBATE_ID,topicItem.id)
+            intent.putExtra(SurveyActivity.PARTICIPATION,topicItem.participation)
+            intent.putExtra(SurveyActivity.MODE,SurveyActivity.PRE_DEBATE)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
     }

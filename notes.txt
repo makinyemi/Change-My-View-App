@@ -1,42 +1,84 @@
+Notifications:
+    - Chat Notifications
+    - Send one when there is like 10 minutes left?
+        - Requires setting up an alarm to push the notification
+    - Send one when the debate is over
+        - Requires setting up an alarm to push the notification
+    - Send a reminder notification to complete the final survey
+        - Maybe use an alarm?  Invalidate the alarm if the user does it manually
 
-// Old database design
-{
-    "chats": {
-        "chatID": {
-            "chatID": "chatID",
-            "debateID": "debateID",
-            "UID": "userID",
-            "message": "lol",
-            "timestamp": ...
-        }
-    }
-}
+Initial survey:
+    - Pass an intent extra to indiciate if the person will be on a side or not
+    - Indicate if the debator's pool is full (this should be done on the topic selection
+      activity)
+    - Post survey, present the user with their 'score'.  If the user is going into a
+      debate, tell them their side.
 
-// Suggested design
-{
-    "chats": {
-        "debateID": {
-            "chatID": "lol",
-            "debateID": "debateID",
-            "UID": "userID",
-            "side": "",
-            "message": "this sux",
-            "timestamp": ...
-        },
-        "debateID2": {
-            ...
-        }
-    },
-    "debates": {
-        "debateID": {
-            "debateID": "debateID",
-            "leftUIDs": ...,
-            "rightUIDs": ...
-        }
-    }
-}
+The end of debate survey:
+    - Don't force all users to immediately compelete the final survey immediately.
+      Maybe replace the chat sending area with a button for the survey?
+      We want to let users review the chat log before doing the survey.
 
-val chats = FirebaseDatabase.getInstance().getReference("chats").child("debateID")
-chats.addValueListener {
-    ...
-}
+
+
+debate is done -> fill out the survey -> results
+
+store something in profile -> chatlog & results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Choose Debate or observe -> Topic selection -> survey -> home (click on a debate if its started) -> debate -> survey -> Results -> done
+
+Choose Debate or observe -> Topic selection -> survey -> queue page (wait for others) -> debate -> survey -> Results -> done
+
+debate: x people per side
+    - side 1: 1/2
+    - side 2: 2/2
+
+1) The first debator: survey -> ? -> debate
+2) Observers for a debate that hasnt started: survey -> home

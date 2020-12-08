@@ -29,9 +29,11 @@ class TopicActivity : AppCompatActivity() {
         Database.debates.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mTopicList!!.clear()
+                val mode = intent.getStringExtra(SurveyActivity.PARTICIPATION)
+
                 snapshot.children.forEach {
-                    mTopicList!!.add(TopicItem(it.child("title").value.toString()))
-                    Log.d("NewMessage", mTopicList.toString())
+                    mTopicList!!.add(
+                        TopicItem(it.child("title").value.toString(),it.child("debateID").value.toString(), mode))
                 }
                 topicItemAdapters = TopicItemAdapters(applicationContext, mTopicList!!)
                 recyclerView?.adapter = topicItemAdapters

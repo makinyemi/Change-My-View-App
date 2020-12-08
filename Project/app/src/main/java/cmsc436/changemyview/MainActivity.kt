@@ -1,20 +1,23 @@
 package cmsc436.changemyview
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-
-
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity() {
     val auth = FirebaseAuth.getInstance()
-    private lateinit var currentUser: FirebaseUser
+    private lateinit var currentUser: String
     private lateinit var mLogout: Button
     private lateinit var debateButton : Button
     private lateinit var observerButton : Button
@@ -23,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
+        //Current firebase user logged in
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
         debateButton = findViewById(R.id.home_btn_debate)
         observerButton = findViewById(R.id.home_btn_observe)
@@ -31,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         debateButton.setOnClickListener {
             val intent = Intent(this, TopicActivity::class.java)
             //TODO
-            //Set flag user in database as a debater
+            intent.putExtra(SurveyActivity.PARTICIPATION,SurveyActivity.DEBATING)
             startActivity(intent)
         }
 
@@ -39,6 +44,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, TopicActivity::class.java)
             //TODO
             //Set flag user in database as a observer
+            intent.putExtra(SurveyActivity.PARTICIPATION,SurveyActivity.OBSERVING)
+
             startActivity(intent)
         }
 
@@ -52,6 +59,14 @@ class MainActivity : AppCompatActivity() {
         mLogout = findViewById(R.id.home_btn_logout)
         mLogout.setOnClickListener {
             logout()
+        }
+
+        findViewById<FloatingActionButton>(R.id.home_btn_profile).setOnClickListener {
+            val intent = Intent(this, SurveyActivity::class.java)
+            intent.putExtra(Database.DEBATE_ID, "-MNir5jwkTgaSn3rVNqc")
+            intent.putExtra(SurveyActivity.MODE, SurveyActivity.PRE_DEBATE)
+            intent.putExtra(SurveyActivity.PARTICIPATION, SurveyActivity.DEBATING)
+            startActivity(intent)
         }
     }
 
@@ -90,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(loginIntent)
         } else {
             // User is logged in, proceed to the home page
-            currentUser = auth.currentUser!!
+            currentUser = auth.currentUser.toString()!!
         }
     }
 
