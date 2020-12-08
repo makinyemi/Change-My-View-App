@@ -36,7 +36,6 @@ class Database {
         val users = database.getReference(USERS)
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)
-        val queue = database.getReference(QUEUE)
 
         fun pushUser(uid:String, username: String, email: String) {
             val data = UserData(uid, username, email)

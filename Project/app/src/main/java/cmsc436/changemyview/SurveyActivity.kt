@@ -119,6 +119,7 @@ class SurveyActivity: AppCompatActivity() {
         })
 
         btnSubmit.setOnClickListener {
+            disable()
             submitBtn()
         }
     }
