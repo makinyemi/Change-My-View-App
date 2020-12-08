@@ -1,5 +1,6 @@
 package cmsc436.changemyview
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -52,6 +53,14 @@ class MainActivity : AppCompatActivity() {
         mLogout = findViewById(R.id.home_btn_logout)
         mLogout.setOnClickListener {
             logout()
+        }
+
+        findViewById<FloatingActionButton>(R.id.home_btn_profile).setOnClickListener {
+            val intent = Intent(this, SurveyActivity::class.java)
+            intent.putExtra(Database.DEBATE_ID, "-MNir5jwkTgaSn3rVNqc")
+            intent.putExtra(SurveyActivity.MODE, SurveyActivity.PRE_DEBATE)
+            intent.putExtra(SurveyActivity.PARTICIPATION, SurveyActivity.DEBATING)
+            startActivity(intent)
         }
     }
 
