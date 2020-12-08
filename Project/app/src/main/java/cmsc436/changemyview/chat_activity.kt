@@ -26,7 +26,7 @@ class chat_activity : AppCompatActivity() {
 
     val adapter = GroupAdapter<GroupieViewHolder>()
 
-    lateinit var debate : DebateTopic
+
     lateinit var dID : String
     lateinit var uid : String
     lateinit var timer : TextView
@@ -156,7 +156,7 @@ class chat_activity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         //val debateID = intent.getStringExtra(Database.DEBATE_ID)
 
-        val debateID = debate.debateID
+        val debateID = dID
 
         val reference = FirebaseDatabase.getInstance().getReference("/chats").push()
 
