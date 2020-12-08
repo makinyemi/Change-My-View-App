@@ -25,6 +25,7 @@ class QueueActivity: AppCompatActivity() {
     private lateinit var againstParticipants: TextView
     private lateinit var forParticipants: TextView
     private lateinit var btnLaunch: Button
+    private var started: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,11 +70,12 @@ class QueueActivity: AppCompatActivity() {
         btnLaunch = findViewById(R.id.queue_btn_launch)
 
         // Set the debate title
-        Database.debates.child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
+        Database.debates.child(debateID).addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val data = snapshot.getValue(DebateTopic::class.java)
                 if(data != null) {
                     debateTitle.text = data.title
+                    started = !data.startTime.isNullOrEmpty()
                 }
             }
 
@@ -94,7 +96,6 @@ class QueueActivity: AppCompatActivity() {
                     // Check if we should start the debate
                     // Only if there is at least one user on each side
                     if(data.left >= 1 && data.right >= 1) {
-                        Database.startDebate(debateID)
                         btnLaunch.visibility = View.VISIBLE
                     }
                 }
@@ -104,6 +105,10 @@ class QueueActivity: AppCompatActivity() {
         })
 
         btnLaunch.setOnClickListener {
+            if(!started) {
+                Database.startDebate(debateID)
+            }
+
             val chatIntent = Intent(this, chat_activity::class.java)
             chatIntent.putExtra(Database.DEBATE_ID, debateID)
             startActivity(chatIntent)

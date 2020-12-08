@@ -84,13 +84,12 @@ class chat_activity : AppCompatActivity() {
                     val currentTime = LocalDateTime.now()
                     val elapsed = currentTime.nano - startTime.nano
                     remTime = 3600000 - (elapsed / 1000000)
+                    startTimer(remTime.toLong() , dID)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
-
-        startTimer(remTime.toLong() , dID)
 
         // send messages to the database
         chat_btn_send.setOnClickListener {
@@ -114,9 +113,11 @@ class chat_activity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val timeLeft = millisUntilFinished / 1000
                 timer.text = timeLeft.toString()
+                Log.i("CMV", "TIMER: $timeLeft")
             }
 
             override fun onFinish() {
+                Log.i("CMV", "Done!")
                 startActivity(surveyIntent)
             }
 
