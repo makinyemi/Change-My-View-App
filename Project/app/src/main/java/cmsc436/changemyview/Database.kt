@@ -1,6 +1,7 @@
 package cmsc436.changemyview
 
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import java.time.LocalDateTime
 import java.util.*
 
@@ -38,7 +39,7 @@ class Database {
             val data = UserData(uid, username, email)
             users.child(uid).setValue(data)
         }
-
+      
         fun pushDebateTopic(title: String, questions: List<String>, runtime: Int) {
             val debateID = debates.push().key
             if(debateID != null) {
