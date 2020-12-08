@@ -80,6 +80,12 @@ class SurveyActivity: AppCompatActivity() {
                     left = data.left
                     right = data.right
                 }
+
+                // If there is no queue, make one
+                else {
+                    Database.queue.child(debateID)
+                        .setValue(QueueData(4, 0, 0))
+                }
             }
 
             override fun onCancelled(p0: DatabaseError) {}
