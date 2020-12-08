@@ -11,9 +11,9 @@ class TopicQuestionFragment : Fragment(R.layout.topic_question_fragment) {
     fun updateQuestion(text: String) {
         // Hopefully catch any errors before a crash due to the below non-null assertion
         if(view != null) {
-            val title = view!!.findViewById<TextView>(R.id.topic_question_title)
-            val indicator = view!!.findViewById<TextView>(R.id.topic_question_indicator)
-            val input = view!!.findViewById<SeekBar>(R.id.topic_question_input)
+            val title = requireView().findViewById<TextView>(R.id.topic_question_title)
+            val indicator = requireView().findViewById<TextView>(R.id.topic_question_indicator)
+            val input = requireView().findViewById<SeekBar>(R.id.topic_question_input)
 
             title.text = text
 
@@ -44,6 +44,13 @@ class TopicQuestionFragment : Fragment(R.layout.topic_question_fragment) {
         // Scores go from [-2, 2]
         // -2 being completely left and 2 being completely right
         return value - 2
+    }
+
+    fun enable(enabled: Boolean) {
+        if(view != null) {
+            val input = requireView().findViewById<SeekBar>(R.id.topic_question_input)
+            input.isEnabled = enabled
+        }
     }
 
     companion object {

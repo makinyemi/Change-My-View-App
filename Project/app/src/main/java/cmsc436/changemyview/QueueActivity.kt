@@ -2,8 +2,6 @@ package cmsc436.changemyview
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,12 +16,9 @@ class QueueActivity: AppCompatActivity() {
     private lateinit var debateID: String
 
     private lateinit var side: String
-    private lateinit var queueData: QueueData
 
     private lateinit var debateTitle: TextView
     private lateinit var sideIndicator: TextView
-    private lateinit var againstParticipants: TextView
-    private lateinit var forParticipants: TextView
     private lateinit var btnLaunch: Button
     private var started: Boolean = true
 
@@ -65,8 +60,6 @@ class QueueActivity: AppCompatActivity() {
 
         debateTitle = findViewById(R.id.queue_debate_title)
         sideIndicator = findViewById(R.id.queue_side_indicator)
-        againstParticipants = findViewById(R.id.queue_current_against)
-        forParticipants = findViewById(R.id.queue_current_for)
         btnLaunch = findViewById(R.id.queue_btn_launch)
 
         // Set the debate title
@@ -82,28 +75,6 @@ class QueueActivity: AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        // Continually update the numerical presentation of the waiting area
-        Database.queue.child(debateID).addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val data = snapshot.getValue(QueueData::class.java)
-                if(data != null) {
-                    queueData = data
-
-                    // Update screen text
-                    againstParticipants.text = data.left.toString()
-                    forParticipants.text = data.right.toString()
-
-                    // Check if we should start the debate
-                    // Only if there is at least one user on each side
-                    if(data.left >= 1 && data.right >= 1) {
-                        btnLaunch.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-            override fun onCancelled(p0: DatabaseError) {}
-        })
-
         btnLaunch.setOnClickListener {
             if(!started) {
                 Database.startDebate(debateID)
@@ -117,18 +88,6 @@ class QueueActivity: AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        // Remove user from the queue
-        when(side) {
-            Database.LEFT -> {
-                queueData = QueueData(queueData.max, if(queueData.left > 0) {queueData.left - 1} else {queueData.left}, queueData.right)
-                Database.queue.child(debateID).setValue(queueData)
-            }
-            Database.RIGHT -> {
-                queueData = QueueData(queueData.max, queueData.left, if(queueData.right > 0) {queueData.right - 1} else {queueData.right})
-                Database.queue.child(debateID).setValue(queueData)
-            }
-        }
 
         // Redirect to the home activity
         val homeIntent = Intent(this, MainActivity::class.java)

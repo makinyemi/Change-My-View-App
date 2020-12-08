@@ -4,7 +4,7 @@
     <string name="topic_selector_title">Topics</string>
     <string name="home_current_debates">Current Discussions</string>
     <string name="profile_past_debates">Past Discussions</string>
-    <string name="debate_remaining_time">Remaining Time: </string>
+    <string name="debate_btn_done">Done</string>
     <string name="login_register">Sign Up</string>
     <string name="register_title">Register Account</string>
 
