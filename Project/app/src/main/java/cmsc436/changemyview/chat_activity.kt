@@ -1,15 +1,17 @@
 package cmsc436.changemyview
 
+import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.chat_from_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
 import kotlinx.android.synthetic.main.debate.*
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -25,27 +28,85 @@ class chat_activity : AppCompatActivity() {
 
     val adapter = GroupAdapter<GroupieViewHolder>()
 
+
+    lateinit var dID : String
+    lateinit var uid : String
+    lateinit var title: TextView
+    lateinit var btnDone: Button
+    lateinit var countDownTimer : CountDownTimer
+    lateinit var team : String
+    lateinit var participation : String
+    var remTime: Int = 0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.debate)
 
+        dID = intent.getStringExtra(Database.DEBATE_ID).toString()
         chatBox.adapter = adapter
+        uid = FirebaseAuth.getInstance().currentUser?.uid!!
+        val reference = Database.users.child(uid).child(Database.DEBATES).child(dID)
+
+        
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (px in snapshot.children) {
+                    if (px.key.equals(Database.PARTICIPATION)){
+                        participation = px.getValue(String :: class.java).toString()
+                        if (participation != Database.DEBATING) {
+                            message_box.visibility = View.GONE
+                        }
+                    }
+                    else if (px.key.equals(Database.SIDE)) {
+                        team = px.getValue(String :: class.java).toString()
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+        title = findViewById(R.id.debate_title)
+        btnDone = findViewById(R.id.debate_btn_done)
+
+        Database.debates.child(dID).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val data = snapshot.getValue(DebateTopic::class.java)
+                if(data != null) {
+                    // Set the title
+                    title.text = data.title
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
 
         // send messages to the database
         chat_btn_send.setOnClickListener {
             performSendMessage()
         }
 
-        //
+
+        btnDone.setOnClickListener{
+            val surveyIntent = Intent(this, SurveyActivity::class.java)
+            surveyIntent.putExtra(Database.DEBATE_ID, dID)
+            surveyIntent.putExtra(SurveyActivity.MODE, SurveyActivity.POST_DEBATE)
+            startActivity(surveyIntent)
+        }
+
+
         listenForMessages()
 
     }
 
-
     private fun listenForMessages(){
 
 
-        val reference = Database.chats.child("kamdlkamsdkamsd")
+        val reference = Database.chats.child(dID)
 
         Log.i("My Activity", "We've entered the method")
 
@@ -57,7 +118,15 @@ class chat_activity : AppCompatActivity() {
                 val chatMessage = p0.getValue(ChatMessage::class.java)
 
                 if (chatMessage != null) {
+
+                    if (team == chatMessage.team) {
+                        adapter.add(MessageSent(chatMessage.message))
+                    }
+
+                    else
+
                     adapter.add(MessageReceived(chatMessage.message))
+
                 }
 
             }
@@ -88,17 +157,17 @@ class chat_activity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         //val debateID = intent.getStringExtra(Database.DEBATE_ID)
 
-        val debateID = "kamdlkamsdkamsd"
+        val debateID = dID
 
         val reference = FirebaseDatabase.getInstance().getReference("/chats").push()
 
-        val chatMessage = ChatMessage(reference.key!!, "ex debate ID", "exUID", chatText, timeStamp.toString())
+        val chatMessage = ChatMessage(reference.key!!, debateID, uid!!, chatText, timeStamp.toString(), team)
 
-        if (debateID != null) {
-            Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
-                Log.d("", "Saved message: ${reference.key!!}")
-            }
+        Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
+            Log.d("", "Saved message: ${reference.key!!}")
         }
+
+        chat_edit_message.setText("")
 
     }
 
@@ -107,12 +176,6 @@ class chat_activity : AppCompatActivity() {
         val adapter = GroupAdapter<GroupieViewHolder>()
 
         chatBox.adapter = adapter
-
-        adapter.add(MessageSent("yo yoooo wassguuuud brodie"))
-        adapter.add(MessageReceived("how you been?"))
-        adapter.add(MessageSent("I been good hbu"))
-        adapter.add(MessageSent("i head you went to school X"))
-        adapter.add(MessageSent("Is school X better or worse than our old school, y?"))
 
     }
 }

@@ -27,10 +27,6 @@ class SurveyActivity: AppCompatActivity() {
     private lateinit var question4Fragment: TopicQuestionFragment
     private lateinit var question5Fragment: TopicQuestionFragment
 
-    private var max: Int = 0
-    private var left: Int = 0
-    private var right: Int = 0
-
     private var averageInitialScores: Score? = null
     private var averageFinalScores: Score? = null
 
@@ -53,6 +49,9 @@ class SurveyActivity: AppCompatActivity() {
         question4Fragment = supportFragmentManager.findFragmentById(R.id.topic_question_4_fragment) as TopicQuestionFragment
         question5Fragment = supportFragmentManager.findFragmentById(R.id.topic_question_5_fragment) as TopicQuestionFragment
 
+        // Disable input until we can check if the data has already been set
+        disable()
+
         // Fetch the debate topic questions
         Database.debates.child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -65,20 +64,6 @@ class SurveyActivity: AppCompatActivity() {
                     question3Fragment.updateQuestion(data.questions[2])
                     question4Fragment.updateQuestion(data.questions[3])
                     question5Fragment.updateQuestion(data.questions[4])
-                }
-            }
-
-            override fun onCancelled(p0: DatabaseError) {}
-        })
-
-        // Continually update the participants per side
-        Database.queue.child(debateID).addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val data = snapshot.getValue(QueueData::class.java)
-                if(data != null) {
-                    max = data.max
-                    left = data.left
-                    right = data.right
                 }
             }
 
@@ -102,7 +87,39 @@ class SurveyActivity: AppCompatActivity() {
             override fun onCancelled(p0: DatabaseError) {}
         })
 
+        // Check if the user's side has been set for this debate
+        Database.users.child(uid).child(Database.DEBATES).child(debateID).addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var run = false
+
+                for (data in snapshot.children) {
+                    run = true
+                    Log.i(TAG, "Key: ${data.key}")
+                    if(mode == PRE_DEBATE && data.key == Database.INITIAL_SCORE) {
+                        // Side has been set, send to the queue activity
+                        val queueIntent = Intent(applicationContext, QueueActivity::class.java)
+                        queueIntent.putExtra(Database.DEBATE_ID, debateID)
+                        startActivity(queueIntent)
+                    }else if(mode == POST_DEBATE && data.key == Database.FINAL_SCORE) {
+                        // Start results activity
+                        val resultsIntent = Intent(applicationContext, ResultsActivity::class.java)
+                        resultsIntent.putExtra(Database.DEBATE_ID, debateID)
+                        startActivity(resultsIntent)
+                    }else {
+                        enable()
+                    }
+                }
+
+                if(!run) {
+                    enable()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
         btnSubmit.setOnClickListener {
+            disable()
             submitBtn()
         }
     }
@@ -133,48 +150,13 @@ class SurveyActivity: AppCompatActivity() {
 
             // Determine user side
             var side = Database.NONE
-            val limit = max / 2
 
-            // If debating, make sure there is room on the side
-            if(participation == DEBATING) {
-                // Check left side
-                if (score.left > score.right && left < limit)
-                    side = Database.LEFT
-
-                // Check right side
-                else if (score.left < score.right && right < limit)
-                    side = Database.RIGHT
-
-                // Scored neutral
-                else if (score.left == score.right && (left <= limit || right <= limit)) {
-                    // Right side has room
-                    if(left >= limit && right < limit)
-                        side = Database.RIGHT
-
-                    // Left side has room
-                    else if(right >= limit && left < limit)
-                        side = Database.LEFT
-
-                    // If both sides have room
-                    else
-                        side = Database.LEFT
-                }
-
-                // If the scored side is full, default to an observer.
-                // We don't want to allow people who scored on one side
-                // to negatively affect the opposing side by placing them
-                // on that other side for the debate. (No devils advocate)
-                else
-                    participation = OBSERVING
-            }
-
-            // If observing, set side just based on score
-            if(participation == OBSERVING) {
-                if (score.left > score.right)
-                    side = Database.LEFT
-                else if (score.left < score.right)
-                    side = Database.RIGHT
-            }
+            if (score.left > score.right)
+                side = Database.LEFT
+            else if (score.left < score.right)
+                side = Database.RIGHT
+            else
+                side = Database.LEFT
 
             // Write side to database
             Database.users
@@ -183,17 +165,6 @@ class SurveyActivity: AppCompatActivity() {
                 .child(debateID)
                 .child(Database.SIDE)
                 .setValue(side)
-
-            // Update the queue tracker
-            // Side should never be Database.NONE at this point
-            if(participation == DEBATING) {
-                when (side) {
-                    Database.LEFT -> Database.queue.child(debateID).child(Database.LEFT)
-                        .setValue(left + 1)
-                    Database.RIGHT -> Database.queue.child(debateID).child(Database.RIGHT)
-                        .setValue(right + 1)
-                }
-            }
 
             // Write participation to database
             Database.users
@@ -246,6 +217,24 @@ class SurveyActivity: AppCompatActivity() {
         val score = q1 + q2 + q3 + q4 + q5
 
         return Score(10 - score, 10 + score)
+    }
+
+    private fun enable() {
+        btnSubmit.isEnabled = true
+        question1Fragment.enable(true)
+        question2Fragment.enable(true)
+        question3Fragment.enable(true)
+        question4Fragment.enable(true)
+        question5Fragment.enable(true)
+    }
+
+    private fun disable() {
+        btnSubmit.isEnabled = false
+        question1Fragment.enable(false)
+        question2Fragment.enable(false)
+        question3Fragment.enable(false)
+        question4Fragment.enable(false)
+        question5Fragment.enable(false)
     }
 
     companion object {

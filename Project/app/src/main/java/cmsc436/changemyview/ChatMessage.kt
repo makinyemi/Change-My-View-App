@@ -8,14 +8,16 @@ data class ChatMessage(
     val debateID: String,
     val uid: String,
     val message: String,
-    val timestamp: String
+    val timestamp: String,
+    val team : String
 ) {
-    constructor() : this("","","","","")
+    constructor() : this("","","","","", "")
     companion object {
         const val CHAT_ID = "chatID"
         const val DEBATE_ID = "debateID"
         const val UID = "UID"
         const val MESSAGE = "message"
         const val TIMESTAMP = "timestamp"
+        const val TEAM = "team"
     }
 }

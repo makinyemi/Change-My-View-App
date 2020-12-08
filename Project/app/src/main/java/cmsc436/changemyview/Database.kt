@@ -4,6 +4,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.*
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class Database {
@@ -35,19 +36,10 @@ class Database {
         val users = database.getReference(USERS)
         val chats = database.getReference(CHATS)
         val debates = database.getReference(DEBATES)
-        val queue = database.getReference(QUEUE)
 
         fun pushUser(uid:String, username: String, email: String) {
             val data = UserData(uid, username, email)
             users.child(uid).setValue(data)
-        }
-
-        fun pushChat(debateID: String, uid: String, message: String) {
-            val chatID = chats.push().key
-            if(chatID != null) {
-                val data = ChatMessage(chatID, debateID, uid, message, LocalDateTime.now().toString())
-                chats.child(chatID).setValue(data)
-            }
         }
 
         fun pushDebateTopic(title: String, questions: List<String>, runtime: Int) {
@@ -66,17 +58,8 @@ class Database {
 
         fun startDebate(debateID: String) {
             val debate = debates.child(debateID)
-            debate.child(DebateTopic.START_TIME).setValue(LocalDateTime.now().toString())
-        }
-
-        fun addUserToDebateSide(debateID: String, uid: String, left: Boolean) {
-            val side = users.child(DEBATES).child(debateID).child(SIDE)
-            side.setValue(if(left){ LEFT } else { RIGHT })
-        }
-
-        fun addUserParticipationMethod(debateID: String, uid: String, debating: Boolean) {
-            val side = users.child(DEBATES).child(debateID).child(PARTICIPATION)
-            side.setValue(if(debating){ DEBATING } else { OBSERVING })
+            debate.child(DebateTopic.START_TIME).setValue(LocalDateTime.now().format(
+                DateTimeFormatter.ISO_DATE_TIME))
         }
     }
 
