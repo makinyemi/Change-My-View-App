@@ -26,6 +26,7 @@ class chat_activity : AppCompatActivity() {
     val adapter = GroupAdapter<GroupieViewHolder>()
 
     lateinit var debate : DebateTopic
+    lateinit var dID : String
     lateinit var uid : String
     lateinit var timer : TextView
     lateinit var countDownTimer : CountDownTimer
@@ -35,35 +36,14 @@ class chat_activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.debate)
 
+        dID = intent.getStringExtra(Database.DEBATE_ID).toString()
+
         chatBox.adapter = adapter
 
-        uid = FirebaseAuth.getInstance().currentUser?.uid!!
+        //uid = FirebaseAuth.getInstance().currentUser?.uid!!
         timer = findViewById(R.id.debate_time_rem)
-        val dID = intent.getStringExtra(Database.DEBATE_ID)
 
-
-        if (dID != null) {
-
-            val reference = FirebaseDatabase.getInstance().getReference("/debates").child(dID)
-
-
-
-            Database.debates.child(dID).addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(p0: DataSnapshot) {
-                    val debateTopic = p0.getValue(DebateTopic :: class.java)
-                    startTimer()
-                    if (debateTopic != null) {
-                        debate = debateTopic
-                    }
-                }
-
-                override fun onCancelled(p0: DatabaseError) {
-
-                }
-            })
-
-
-        }
+        startTimer(3600000 , dID)
 
         // send messages to the database
         chat_btn_send.setOnClickListener {
@@ -78,8 +58,9 @@ class chat_activity : AppCompatActivity() {
 
     private fun startTimer(runtime : Long, debateID : String) {
 
-        val resultsIntent = Intent(this, ResultsActivity::class.java)
-        resultsIntent.putExtra("DEBATE_ID", debateID)
+        val surveyIntent = Intent(this, SurveyActivity::class.java)
+        surveyIntent.putExtra(Database.DEBATE_ID, debateID)
+        surveyIntent.putExtra(SurveyActivity.MODE, SurveyActivity.POST_DEBATE)
 
         countDownTimer = object : CountDownTimer(runtime, 1000){
 
@@ -89,7 +70,7 @@ class chat_activity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                startActivity(resultsIntent)
+                startActivity(surveyIntent)
             }
 
         }
@@ -99,7 +80,7 @@ class chat_activity : AppCompatActivity() {
     private fun listenForMessages(){
 
 
-        val reference = Database.chats.child(debate.debateID)
+        val reference = Database.chats.child(dID)
 
         Log.i("My Activity", "We've entered the method")
 
