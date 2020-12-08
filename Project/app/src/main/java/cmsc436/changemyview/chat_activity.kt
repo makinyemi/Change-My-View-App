@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.chat_from_row.view.*
 import kotlinx.android.synthetic.main.chat_to_row.view.*
 import kotlinx.android.synthetic.main.debate.*
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -29,11 +30,12 @@ class chat_activity : AppCompatActivity() {
 
     lateinit var dID : String
     lateinit var uid : String
+    lateinit var title: TextView
     lateinit var timer : TextView
     lateinit var countDownTimer : CountDownTimer
     lateinit var team : String
     lateinit var participation : String
-    lateinit var remTime: Int
+    var remTime: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,21 +68,29 @@ class chat_activity : AppCompatActivity() {
 
         })
 
-
+        title = findViewById(R.id.debate_title)
         timer = findViewById(R.id.debate_time_rem)
 
         Database.debates.child(dID).addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val data = snapshot.getValue(DebateTopic::class.java)
                 if(data != null) {
-                    
+                    // Set the title
+                    title.text = data.title
+
+                    // Calculate remaining time
+                    val formatter = DateTimeFormatter.ISO_DATE_TIME
+                    val startTime: LocalDateTime = LocalDateTime.parse(data.startTime, formatter)
+                    val currentTime = LocalDateTime.now()
+                    val elapsed = currentTime.nano - startTime.nano
+                    remTime = 3600000 - (elapsed / 1000000)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        startTimer(3600000 , dID)
+        startTimer(remTime.toLong() , dID)
 
         // send messages to the database
         chat_btn_send.setOnClickListener {
