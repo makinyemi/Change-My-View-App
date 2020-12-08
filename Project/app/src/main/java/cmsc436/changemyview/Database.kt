@@ -42,14 +42,6 @@ class Database {
             users.child(uid).setValue(data)
         }
 
-        fun pushChat(debateID: String, uid: String, message: String) {
-            val chatID = chats.push().key
-            if(chatID != null) {
-                val data = ChatMessage(chatID, debateID, uid, message, LocalDateTime.now().toString())
-                chats.child(chatID).setValue(data)
-            }
-        }
-
         fun pushDebateTopic(title: String, questions: List<String>, runtime: Int) {
             val debateID = debates.push().key
             if(debateID != null) {

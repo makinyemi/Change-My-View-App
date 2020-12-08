@@ -90,11 +90,9 @@ class QueueActivity: AppCompatActivity() {
         })
 
         btnLaunch.setOnClickListener {
-            Log.i(TAG, "Launch the chat")
-            // TODO
-            //val chatIntent = Intent(this, chat_activity::class.java)
-            //chatIntent.putExtra(Database.DEBATE_ID, debateID)
-            //startActivity(chatIntent)
+            val chatIntent = Intent(this, chat_activity::class.java)
+            chatIntent.putExtra(Database.DEBATE_ID, debateID)
+            startActivity(chatIntent)
         }
     }
 
