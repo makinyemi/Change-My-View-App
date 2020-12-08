@@ -1,15 +1,15 @@
 package cmsc436.changemyview
 
+import android.content.Intent
 import android.nfc.Tag
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
@@ -25,27 +25,81 @@ class chat_activity : AppCompatActivity() {
 
     val adapter = GroupAdapter<GroupieViewHolder>()
 
+    lateinit var debate : DebateTopic
+    lateinit var uid : String
+    lateinit var timer : TextView
+    lateinit var countDownTimer : CountDownTimer
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.debate)
 
         chatBox.adapter = adapter
 
+        uid = FirebaseAuth.getInstance().currentUser?.uid!!
+        timer = findViewById(R.id.debate_time_rem)
+        val dID = intent.getStringExtra(Database.DEBATE_ID)
+
+
+        if (dID != null) {
+
+            val reference = FirebaseDatabase.getInstance().getReference("/debates").child(dID)
+
+
+
+            Database.debates.child(dID).addListenerForSingleValueEvent(object : ValueEventListener{
+                override fun onDataChange(p0: DataSnapshot) {
+                    val debateTopic = p0.getValue(DebateTopic :: class.java)
+                    startTimer()
+                    if (debateTopic != null) {
+                        debate = debateTopic
+                    }
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+            })
+
+
+        }
+
         // send messages to the database
         chat_btn_send.setOnClickListener {
             performSendMessage()
         }
 
-        //
+
         listenForMessages()
 
+    }
+
+
+    private fun startTimer(runtime : Long, debateID : String) {
+
+        val resultsIntent = Intent(this, ResultsActivity::class.java)
+        resultsIntent.putExtra("DEBATE_ID", debateID)
+
+        countDownTimer = object : CountDownTimer(runtime, 1000){
+
+            override fun onTick(millisUntilFinished: Long) {
+                val timeLeft = millisUntilFinished / 1000
+                timer.text = timeLeft.toString()
+            }
+
+            override fun onFinish() {
+                startActivity(resultsIntent)
+            }
+
+        }
     }
 
 
     private fun listenForMessages(){
 
 
-        val reference = Database.chats.child("kamdlkamsdkamsd")
+        val reference = Database.chats.child(debate.debateID)
 
         Log.i("My Activity", "We've entered the method")
 
@@ -88,11 +142,11 @@ class chat_activity : AppCompatActivity() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         //val debateID = intent.getStringExtra(Database.DEBATE_ID)
 
-        val debateID = "kamdlkamsdkamsd"
+        val debateID = debate.debateID
 
         val reference = FirebaseDatabase.getInstance().getReference("/chats").push()
 
-        val chatMessage = ChatMessage(reference.key!!, "ex debate ID", "exUID", chatText, timeStamp.toString())
+        val chatMessage = ChatMessage(reference.key!!, debateID, uid!!, chatText, timeStamp.toString())
 
         if (debateID != null) {
             Database.chats.child(debateID).child(reference.key!!).setValue(chatMessage).addOnSuccessListener {
@@ -107,12 +161,6 @@ class chat_activity : AppCompatActivity() {
         val adapter = GroupAdapter<GroupieViewHolder>()
 
         chatBox.adapter = adapter
-
-        adapter.add(MessageSent("yo yoooo wassguuuud brodie"))
-        adapter.add(MessageReceived("how you been?"))
-        adapter.add(MessageSent("I been good hbu"))
-        adapter.add(MessageSent("i head you went to school X"))
-        adapter.add(MessageSent("Is school X better or worse than our old school, y?"))
 
     }
 }
